@@ -1,0 +1,6 @@
+{
+  "name": "AI Rural",
+  "description": "AI Rural Services Navigator — Multilingual civic-tech platform connecting rural communities to agricultural, healthcare, welfare, and financial services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
