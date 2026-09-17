@@ -9,7 +9,8 @@ import {
   CornerDownRight,
   ShieldCheck,
   Zap,
-  Layers
+  Layers,
+  Languages
 } from 'lucide-react';
 import { Language } from '../types';
 import { TRANSLATIONS } from '../data/translations';
@@ -17,12 +18,14 @@ import { VillageIllustration } from './VillageIllustration';
 
 interface HeroProps {
   currentLang: Language;
+  onLanguageChange?: (lang: Language) => void;
   onSearchSubmit: (query: string) => void;
   onSelectSampleQuery: (queryId: string) => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({
   currentLang,
+  onLanguageChange,
   onSearchSubmit,
   onSelectSampleQuery,
 }) => {
@@ -31,6 +34,14 @@ export const Hero: React.FC<HeroProps> = ({
   const [simulatedVoiceText, setSimulatedVoiceText] = useState('');
 
   const t = TRANSLATIONS[currentLang];
+
+  const languages: { code: Language; name: string; nativeName: string }[] = [
+    { code: 'en', name: 'English', nativeName: 'English' },
+    { code: 'hi', name: 'Hindi', nativeName: 'हिन्दी' },
+    { code: 'ta', name: 'Tamil', nativeName: 'தமிழ்' },
+    { code: 'te', name: 'Telugu', nativeName: 'తెలుగు' },
+    { code: 'bn', name: 'Bengali', nativeName: 'বাংলা' }
+  ];
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,10 +129,31 @@ export const Hero: React.FC<HeroProps> = ({
             </span>
           </h1>
 
-          {/* Clear One-Line Value Proposition */}
-          <p className="text-lg sm:text-xl text-stone-700 font-medium leading-relaxed max-w-3xl mx-auto mb-9">
-            Voice-first, multilingual AI connecting rural citizens to verified government schemes, agricultural subsidies, and healthcare in their native dialects.
+          {/* User Requested Exact Subtitle */}
+          <p className="text-lg sm:text-xl text-stone-700 font-medium leading-relaxed max-w-3xl mx-auto mb-6">
+            One AI-powered platform to discover government schemes, healthcare, education, agriculture support, and essential public services.
           </p>
+
+          {/* Hero Multilingual Language Selector */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mb-8">
+            <span className="text-xs font-bold text-stone-500 uppercase tracking-wider flex items-center gap-1 mr-1">
+              <Languages className="w-3.5 h-3.5 text-emerald-700" />
+              <span>Language:</span>
+            </span>
+            {languages.map((lang) => (
+              <button
+                key={lang.code}
+                onClick={() => onLanguageChange?.(lang.code)}
+                className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all border ${
+                  currentLang === lang.code
+                    ? 'bg-emerald-800 text-white border-emerald-900 shadow-xs scale-105'
+                    : 'bg-white text-stone-700 border-stone-200 hover:border-emerald-300 hover:bg-stone-50'
+                }`}
+              >
+                {lang.nativeName} ({lang.name})
+              </button>
+            ))}
+          </div>
 
           {/* Central Interactive Voice & Text Search Box */}
           <div className="max-w-2xl mx-auto mb-8">
@@ -140,7 +172,7 @@ export const Hero: React.FC<HeroProps> = ({
                   id="hero-search-input"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={t.hero.searchPlaceholder}
+                  placeholder="Ask in your language: e.g., I am a farmer. What agriculture support is available?"
                   className="w-full py-2 px-1 text-sm sm:text-base font-medium text-stone-800 bg-transparent placeholder-stone-400 focus:outline-none"
                 />
 
@@ -205,6 +237,16 @@ export const Hero: React.FC<HeroProps> = ({
                 <CornerDownRight className="w-3.5 h-3.5 text-amber-600" />
                 {t.hero.popularQueriesLabel}
               </span>
+              <button
+                id="hero-query-farmer-support"
+                onClick={() => {
+                  setSearchQuery('I am a farmer. What agriculture support is available?');
+                  onSearchSubmit('I am a farmer. What agriculture support is available?');
+                }}
+                className="px-2.5 py-1 rounded-full bg-amber-100/80 hover:bg-amber-200 text-amber-950 border border-amber-300 font-bold transition-all"
+              >
+                🌾 “I am a farmer. What agriculture support is available?”
+              </button>
               {t.hero.popularQueries.map((queryText, index) => {
                 const sampleIds = ['pm-kisan', 'kcc', 'health', 'soil'];
                 const queryId = sampleIds[index % sampleIds.length];
@@ -222,24 +264,24 @@ export const Hero: React.FC<HeroProps> = ({
             </div>
           </div>
 
-          {/* Primary Action Buttons & Links: "Try Now" and "Learn More" */}
+          {/* Primary Action Buttons: "Try AI Rural" and "Explore Services" */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-10">
             <a
               href="#ai-chat-demo"
-              id="hero-try-now-cta"
+              id="hero-try-ai-rural-cta"
               className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-base font-bold shadow-md shadow-emerald-900/15 flex items-center justify-center gap-2.5 transition-all group"
             >
               <Sparkles className="w-5 h-5 text-amber-300 group-hover:rotate-12 transition-transform" />
-              <span>Try Now (AI Chat Demo)</span>
+              <span>Try AI Rural</span>
             </a>
 
             <a
-              href="#how-it-works"
-              id="hero-learn-more-cta"
+              href="#services-explorer"
+              id="hero-explore-services-cta"
               className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 text-base font-semibold shadow-2xs flex items-center justify-center gap-2 transition-all hover:border-stone-400"
             >
               <Compass className="w-5 h-5 text-amber-600" />
-              <span>Learn More (How It Works)</span>
+              <span>Explore Services</span>
             </a>
           </div>
 

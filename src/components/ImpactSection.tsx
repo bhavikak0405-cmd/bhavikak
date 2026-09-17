@@ -9,11 +9,14 @@ import {
   Quote, 
   MapPin, 
   CheckCircle2, 
+  ArrowRight,
+  HeartHandshake,
+  AlertTriangle,
+  Cpu,
   TrendingUp,
-  HeartHandshake
+  ArrowDown
 } from 'lucide-react';
 import { Language } from '../types';
-import { CHAT_AND_IMPACT_DATA } from '../data/chatAndImpactData';
 import { TRANSLATIONS } from '../data/translations';
 
 interface ImpactSectionProps {
@@ -21,56 +24,37 @@ interface ImpactSectionProps {
 }
 
 export const ImpactSection: React.FC<ImpactSectionProps> = ({ currentLang }) => {
-  const content = CHAT_AND_IMPACT_DATA[currentLang].impactSection;
   const legacyTranslations = TRANSLATIONS[currentLang].impact;
 
-  const getCardIcon = (id: string) => {
-    switch (id) {
-      case 'service-discovery':
-        return <Compass className="w-6 h-6 text-emerald-700" />;
-      case 'accessibility':
-        return <Wifi className="w-6 h-6 text-amber-700" />;
-      case 'understanding':
-        return <BookOpenCheck className="w-6 h-6 text-orange-700" />;
-      case 'centralized-info':
-      default:
-        return <Layers className="w-6 h-6 text-teal-700" />;
+  const qualitativeOutcomes = [
+    {
+      id: 'easier-discovery',
+      icon: <Compass className="w-6 h-6 text-emerald-800" />,
+      title: 'Easier Discovery',
+      subtitle: 'Proactive Scheme Navigation',
+      badge: 'Civic Access',
+      description: 'Rural citizens no longer need to navigate dozens of conflicting state and central department portals. Spoken or typed inquiries instantly reveal relevant agricultural subsidies, social pensions, and maternal healthcare benefits.',
+      pillar: 'Zero Intermediary Exploitation'
+    },
+    {
+      id: 'better-understanding',
+      icon: <BookOpenCheck className="w-6 h-6 text-amber-700" />,
+      title: 'Better Understanding',
+      subtitle: 'Plain Vernacular Clarity',
+      badge: 'Language Equity',
+      description: 'Complex legal and bureaucratic gazette notifications are synthesized into simple conversational language. Citizens clearly understand whether they qualify before spending money on bus travel to government offices.',
+      pillar: 'Transparent Entitlements'
+    },
+    {
+      id: 'improved-accessibility',
+      icon: <Wifi className="w-6 h-6 text-orange-700" />,
+      title: 'Improved Accessibility',
+      subtitle: 'Voice & Assisted Modes',
+      badge: 'Universal Reach',
+      description: 'Equipped with voice interaction and local dialect support, the platform empowers low-literacy citizens, rural women, and village elders. Also serves as an assisted workbench for Common Service Centre (CSC) operators.',
+      pillar: 'Last-Mile Digital Inclusion'
     }
-  };
-
-  const getCardAccent = (index: number) => {
-    switch (index) {
-      case 0:
-        return {
-          pill: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-          metricColor: 'text-emerald-800',
-          hoverBorder: 'hover:border-emerald-500 hover:shadow-emerald-900/5',
-          glow: 'from-emerald-500/10'
-        };
-      case 1:
-        return {
-          pill: 'bg-amber-100 text-amber-900 border-amber-300',
-          metricColor: 'text-amber-800',
-          hoverBorder: 'hover:border-amber-500 hover:shadow-amber-900/5',
-          glow: 'from-amber-500/10'
-        };
-      case 2:
-        return {
-          pill: 'bg-orange-100 text-orange-900 border-orange-300',
-          metricColor: 'text-orange-800',
-          hoverBorder: 'hover:border-orange-500 hover:shadow-orange-900/5',
-          glow: 'from-orange-500/10'
-        };
-      case 3:
-      default:
-        return {
-          pill: 'bg-teal-100 text-teal-900 border-teal-300',
-          metricColor: 'text-teal-800',
-          hoverBorder: 'hover:border-teal-500 hover:shadow-teal-900/5',
-          glow: 'from-teal-500/10'
-        };
-    }
-  };
+  ];
 
   return (
     <section 
@@ -79,91 +63,185 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ currentLang }) => 
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <motion.div 
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.45, ease: 'easeOut' }}
-          className="text-center max-w-3xl mx-auto mb-14"
-        >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-300 text-xs font-bold uppercase tracking-wider mb-3">
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-300 text-xs font-bold uppercase tracking-wider mb-3 shadow-2xs">
             <HeartHandshake className="w-3.5 h-3.5 text-emerald-700" />
-            <span>{content.sectionBadge}</span>
+            <span>Qualitative Impact & Transformation</span>
           </div>
 
-          <h2 className="font-display text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight mb-4">
-            {content.title}
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-stone-900 tracking-tight mb-4">
+            Expected Impact & Transformation
           </h2>
 
           <p className="text-stone-600 text-base sm:text-lg leading-relaxed">
-            {content.subtitle}
+            How centralizing rural service discovery bridges the digital divide and transforms citizen outcomes across India's villages.
           </p>
-        </motion.div>
-
-        {/* 4 Modern Impact Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {content.cards.map((card, index) => {
-            const styles = getCardAccent(index);
-            return (
-              <motion.div
-                key={card.id}
-                id={`impact-card-${card.id}`}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.4, delay: index * 0.08, ease: 'easeOut' }}
-                className={`group relative p-6 sm:p-7 rounded-2xl bg-[#FCFCFA] border border-stone-200/90 shadow-2xs transition-all duration-200 flex flex-col justify-between overflow-hidden ${styles.hoverBorder}`}
-              >
-                <div>
-                  {/* Top Bar: Icon + Badge */}
-                  <div className="flex items-center justify-between gap-2 mb-5">
-                    <div className="w-12 h-12 rounded-xl bg-white border border-stone-200 shadow-2xs flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                      {getCardIcon(card.id)}
-                    </div>
-                    <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold border uppercase tracking-wide ${styles.pill}`}>
-                      {card.badge}
-                    </span>
-                  </div>
-
-                  {/* Impact Metric & Subtitle */}
-                  <div className="mb-4">
-                    <div className={`font-display text-3xl sm:text-4xl font-black ${styles.metricColor} tracking-tight`}>
-                      {card.metric}
-                    </div>
-                    <div className="text-xs font-bold text-stone-500 uppercase tracking-wide mt-1">
-                      {card.metricLabel}
-                    </div>
-                  </div>
-
-                  {/* Title & Description */}
-                  <h3 className="font-display text-lg font-bold text-stone-900 mb-1">
-                    {card.title}
-                  </h3>
-                  <div className="text-xs font-semibold text-stone-500 mb-3">
-                    {card.subtitle}
-                  </div>
-                  <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-                    {card.description}
-                  </p>
-                </div>
-
-                <div className="mt-5 pt-3 border-t border-stone-200/70 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-950">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-                  <span>Verified Civic Metric</span>
-                </div>
-              </motion.div>
-            );
-          })}
         </div>
 
-        {/* Grassroots Beneficiaries Strip */}
-        <div className="mt-8 pt-8 border-t border-stone-200">
+        {/* The 3-Tier Core Transformation Pipeline:
+            Problem (Scattered Information) → AI Rural (Centralized Multilingual Navigation) → Impact (Easier Discovery + Better Understanding + Improved Accessibility) */}
+        <div className="mb-16 p-6 sm:p-10 rounded-3xl bg-[#FAFBF9] border border-stone-200 shadow-sm relative overflow-hidden">
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+              The Civic-Tech Logic Model
+            </span>
+            <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-stone-900 mt-2">
+              From Information Void to Grounded Action
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch relative z-10">
+            {/* Box 1: The Problem */}
+            <div className="p-6 rounded-2xl bg-white border border-rose-200 shadow-2xs flex flex-col justify-between relative">
+              <div className="absolute top-4 right-4 px-2 py-0.5 rounded bg-rose-50 text-rose-800 border border-rose-200 text-[10px] font-bold uppercase">
+                Challenge
+              </div>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center mb-4">
+                  <AlertTriangle className="w-5 h-5" />
+                </div>
+                <h4 className="font-display text-lg font-bold text-stone-900 mb-1">
+                  Problem
+                </h4>
+                <div className="text-sm font-extrabold text-rose-700 mb-2">
+                  Scattered Information
+                </div>
+                <ul className="space-y-2 text-xs text-stone-600">
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-rose-600 font-bold">•</span>
+                    <span>Dozens of disconnected state & central department portals</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-rose-600 font-bold">•</span>
+                    <span>Dense legalistic terminology alienating low-literacy citizens</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-rose-600 font-bold">•</span>
+                    <span>Reliance on local middlemen and arbitrary commission agents</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-4 pt-3 border-t border-rose-100 text-[11px] font-semibold text-rose-800">
+                Outcome: Low scheme uptake & missed benefits
+              </div>
+            </div>
+
+            {/* Box 2: AI Rural Platform */}
+            <div className="p-6 rounded-2xl bg-gradient-to-b from-emerald-800 to-emerald-900 text-white shadow-md flex flex-col justify-between relative ring-2 ring-emerald-600/30">
+              <div className="absolute top-4 right-4 px-2 py-0.5 rounded bg-amber-400 text-stone-950 text-[10px] font-bold uppercase">
+                Solution
+              </div>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-700 text-amber-300 flex items-center justify-center mb-4">
+                  <Cpu className="w-5 h-5" />
+                </div>
+                <h4 className="font-display text-lg font-bold text-white mb-1">
+                  AI Rural
+                </h4>
+                <div className="text-sm font-extrabold text-amber-300 mb-2">
+                  Centralized Multilingual Navigation
+                </div>
+                <ul className="space-y-2 text-xs text-emerald-100">
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-amber-400 font-bold">•</span>
+                    <span>Single conversational entry-point in 5+ Indian languages</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-amber-400 font-bold">•</span>
+                    <span>Voice-first colloquial speech understanding</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-amber-400 font-bold">•</span>
+                    <span>Gazette-audited Verified Knowledge Base with zero hallucinations</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-4 pt-3 border-t border-emerald-700/60 text-[11px] font-semibold text-amber-300">
+                Action: Grounded rule matching & document checklists
+              </div>
+            </div>
+
+            {/* Box 3: The Impact */}
+            <div className="p-6 rounded-2xl bg-white border border-emerald-300 shadow-2xs flex flex-col justify-between relative">
+              <div className="absolute top-4 right-4 px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold uppercase">
+                Outcomes
+              </div>
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center mb-4">
+                  <TrendingUp className="w-5 h-5" />
+                </div>
+                <h4 className="font-display text-lg font-bold text-stone-900 mb-1">
+                  Impact
+                </h4>
+                <div className="text-sm font-extrabold text-emerald-800 mb-2">
+                  Discovery + Understanding + Accessibility
+                </div>
+                <ul className="space-y-2 text-xs text-stone-600">
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-emerald-700 font-bold">•</span>
+                    <span><strong className="text-stone-900">Easier Discovery:</strong> Proactively surfaces entitled schemes in seconds</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-emerald-700 font-bold">•</span>
+                    <span><strong className="text-stone-900">Better Understanding:</strong> Clear eligibility prerequisites without confusion</span>
+                  </li>
+                  <li className="flex items-start gap-1.5">
+                    <span className="text-emerald-700 font-bold">•</span>
+                    <span><strong className="text-stone-900">Improved Accessibility:</strong> Inclusive for non-English speakers & elders</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="mt-4 pt-3 border-t border-emerald-100 text-[11px] font-semibold text-emerald-800">
+                Result: Dignified civic empowerment & direct benefit access
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 3 Qualitative Core Pillars */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+          {qualitativeOutcomes.map((item) => (
+            <div
+              key={item.id}
+              className="p-6 sm:p-7 rounded-2xl bg-white border border-stone-200 shadow-2xs flex flex-col justify-between hover:border-emerald-500/40 transition-all duration-200"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <div className="p-3 rounded-xl bg-stone-50 border border-stone-200 shadow-2xs">
+                    {item.icon}
+                  </div>
+                  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold border uppercase tracking-wide bg-stone-100 text-stone-700 border-stone-300">
+                    {item.badge}
+                  </span>
+                </div>
+
+                <h3 className="font-display text-xl font-bold text-stone-900 mb-1">
+                  {item.title}
+                </h3>
+                <div className="text-xs font-semibold text-emerald-800 mb-3">
+                  {item.subtitle}
+                </div>
+                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed font-normal">
+                  {item.description}
+                </p>
+              </div>
+
+              <div className="mt-5 pt-3 border-t border-stone-200/70 flex items-center gap-1.5 text-[11px] font-semibold text-stone-700">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                <span>{item.pillar}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Grassroots Beneficiary Experiences */}
+        <div className="pt-8 border-t border-stone-200">
           <div className="text-center max-w-xl mx-auto mb-8">
-            <h3 className="font-display text-lg sm:text-xl font-bold text-stone-900">
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-stone-900">
               Grassroots Beneficiary Experiences
             </h3>
-            <p className="text-xs text-stone-500">
-              Direct voices from Gram Panchayats across Uttar Pradesh, Tamil Nadu, and Bihar.
+            <p className="text-xs sm:text-sm text-stone-500 mt-1">
+              Direct qualitative feedback from Gram Panchayats across Uttar Pradesh, Tamil Nadu, and Bihar.
             </p>
           </div>
 
@@ -171,25 +249,27 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ currentLang }) => 
             {legacyTranslations.testimonials.map((item) => (
               <div
                 key={item.id}
-                className="p-6 rounded-2xl bg-stone-50/80 border border-stone-200/90 shadow-2xs flex flex-col justify-between"
+                className="p-6 rounded-2xl bg-stone-50 border border-stone-200 shadow-2xs flex flex-col justify-between"
               >
                 <div>
-                  <Quote className="w-6 h-6 text-amber-500/50 mb-2" />
+                  <Quote className="w-6 h-6 text-amber-500/60 mb-2" />
                   <p className="text-stone-700 text-xs sm:text-sm leading-relaxed italic mb-4">
                     “{item.quote}”
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-stone-200/80">
-                  <div className="font-display font-bold text-stone-900 text-sm">
-                    {item.name}
+                <div className="pt-3 border-t border-stone-200 flex items-center justify-between gap-2">
+                  <div>
+                    <h5 className="font-bold text-stone-900 text-xs sm:text-sm">
+                      {item.author}
+                    </h5>
+                    <span className="text-[11px] text-stone-500 font-medium">
+                      {item.role}
+                    </span>
                   </div>
-                  <div className="text-xs font-semibold text-emerald-800">
-                    {item.role}
-                  </div>
-                  <div className="flex items-center gap-1 text-[11px] text-stone-500 mt-0.5">
-                    <MapPin className="w-3 h-3 text-stone-400" />
-                    <span>{item.village}, {item.state}</span>
+                  <div className="flex items-center gap-1 text-[10px] text-stone-500 font-mono bg-white px-2 py-1 rounded border border-stone-200">
+                    <MapPin className="w-3 h-3 text-emerald-700" />
+                    <span>{item.location}</span>
                   </div>
                 </div>
               </div>

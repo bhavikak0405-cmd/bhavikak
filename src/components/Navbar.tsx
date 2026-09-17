@@ -54,12 +54,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navLinks = [
     { name: t.nav.home, href: '#home' },
-    { name: navLabels[currentLang]?.problem || 'Challenge', href: '#problem' },
+    { name: 'Services', href: '#services-explorer' },
     { name: t.nav.howItWorks, href: '#how-it-works' },
     { name: t.nav.features, href: '#features' },
-    { name: navLabels[currentLang]?.chat || 'AI Chat Demo', href: '#ai-chat-demo', isSpecial: true },
-    { name: navLabels[currentLang]?.impact || 'Impact', href: '#impact' },
-    { name: navLabels[currentLang]?.trust || 'Verified KB', href: '#verified-knowledge' },
+    { name: 'AI Chat Demo', href: '#ai-chat-demo', isSpecial: true },
+    { name: 'Architecture', href: '#architecture' },
+    { name: 'Admin Verification', href: '#admin-verification' },
     { name: t.nav.contact, href: '#contact' },
   ];
 
