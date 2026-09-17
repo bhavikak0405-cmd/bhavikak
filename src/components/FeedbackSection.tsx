@@ -97,7 +97,7 @@ export const FeedbackSection: React.FC<FeedbackSectionProps> = ({ currentLang })
                     }`}
                   >
                     <ThumbsUp className="w-4 h-4 text-emerald-700" />
-                    <span>Rate Answer</span>
+                    <span>Was this helpful?</span>
                   </button>
 
                   <button
@@ -110,7 +110,7 @@ export const FeedbackSection: React.FC<FeedbackSectionProps> = ({ currentLang })
                     }`}
                   >
                     <Flag className="w-4 h-4 text-amber-600" />
-                    <span>Report Error</span>
+                    <span>Report incorrect info</span>
                   </button>
 
                   <button
@@ -123,7 +123,7 @@ export const FeedbackSection: React.FC<FeedbackSectionProps> = ({ currentLang })
                     }`}
                   >
                     <PlusCircle className="w-4 h-4 text-orange-600" />
-                    <span>Request Scheme</span>
+                    <span>Request missing service</span>
                   </button>
 
                   <button
@@ -136,43 +136,43 @@ export const FeedbackSection: React.FC<FeedbackSectionProps> = ({ currentLang })
                     }`}
                   >
                     <MessageSquare className="w-4 h-4 text-stone-600" />
-                    <span>General Feedback</span>
+                    <span>Feedback form</span>
                   </button>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* TAB 1: Rate an AI Answer */}
+                  {/* TAB 1: Was this helpful? (Yes / No) */}
                   {activeTab === 'rate' && (
                     <div className="space-y-5">
                       <div>
                         <label className="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-2">
-                          Was the AI response clear and helpful?
+                          Was this helpful?
                         </label>
                         <div className="flex items-center gap-3">
                           <button
                             type="button"
                             onClick={() => setIsHelpful(true)}
-                            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all ${
+                            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all ${
                               isHelpful === true
                                 ? 'bg-emerald-50 border-emerald-500 text-emerald-900 ring-2 ring-emerald-500/20'
                                 : 'bg-white border-stone-200 text-stone-700 hover:bg-stone-50'
                             }`}
                           >
                             <ThumbsUp className="w-4 h-4 text-emerald-600" />
-                            <span>Yes, very helpful</span>
+                            <span>Yes</span>
                           </button>
 
                           <button
                             type="button"
                             onClick={() => setIsHelpful(false)}
-                            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all ${
+                            className={`flex items-center gap-2 px-6 py-2.5 rounded-xl border font-bold text-xs sm:text-sm transition-all ${
                               isHelpful === false
                                 ? 'bg-amber-50 border-amber-500 text-amber-900 ring-2 ring-amber-500/20'
                                 : 'bg-white border-stone-200 text-stone-700 hover:bg-stone-50'
                             }`}
                           >
                             <ThumbsDown className="w-4 h-4 text-amber-600" />
-                            <span>Could be improved</span>
+                            <span>No</span>
                           </button>
                         </div>
                       </div>

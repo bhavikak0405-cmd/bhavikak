@@ -16,13 +16,15 @@ import {
   Search,
   ExternalLink,
   Sparkles,
-  Lock
+  Lock,
+  Compass
 } from 'lucide-react';
 import { Language } from '../types';
 
 interface ServiceAuditRecord {
   id: string;
   schemeName: string;
+  category: string;
   ministry: string;
   gazetteRef: string;
   status: 'Pending' | 'Under Review' | 'Verified';
@@ -35,44 +37,48 @@ interface ServiceAuditRecord {
 const INITIAL_RECORDS: ServiceAuditRecord[] = [
   {
     id: 'rec-1',
-    schemeName: 'PM-Kisan Samman Nidhi (18th Installment Update)',
+    schemeName: 'PM-Kisan Samman Nidhi (Kharif e-KYC Update)',
+    category: 'Agriculture',
     ministry: 'Ministry of Agriculture & Farmers Welfare',
     gazetteRef: 'CG-DL-E-15092026-249102',
     status: 'Verified',
-    auditor: 'Dr. A. K. Sharma (Principal Civic Analyst)',
-    lastUpdated: 'Today at 08:30 AM',
+    auditor: 'Dr. A. K. Sharma',
+    lastUpdated: 'Today, 08:30 AM',
     changeSummary: 'Mandatory Aadhaar-based Face Authentication e-KYC requirement ratified for kharif disbursements.',
     trustScore: 100
   },
   {
     id: 'rec-2',
-    schemeName: 'Ayushman Bharat PM-JAY (Vaya Vandana Universal 70+)',
+    schemeName: 'Ayushman Bharat PM-JAY (Senior Citizen 70+ Coverage)',
+    category: 'Healthcare',
     ministry: 'National Health Authority (NHA)',
     gazetteRef: 'NHA/PMJAY/2026/CIR-19',
     status: 'Verified',
-    auditor: 'Meenakshi Sundaram (Health Policy Lead)',
-    lastUpdated: 'Yesterday at 04:15 PM',
+    auditor: 'Meenakshi Sundaram',
+    lastUpdated: 'Yesterday, 04:15 PM',
     changeSummary: 'Universal ₹5 Lakh top-up health coverage extended to all citizens 70+ regardless of family income.',
     trustScore: 100
   },
   {
     id: 'rec-3',
-    schemeName: 'DAP & Complex Fertilizer Subsidy Revision',
+    schemeName: 'DAP & Complex Nutrient-Based Fertilizer Concession',
+    category: 'Agriculture',
     ministry: 'Department of Fertilizers, MoC&F',
     gazetteRef: 'FERT/NBS/2026-Q3',
     status: 'Under Review',
-    auditor: 'Pawan K. Mishra (Agriculture Reviewer)',
+    auditor: 'Pawan K. Mishra',
     lastUpdated: '3 hours ago',
-    changeSummary: 'Special kharif seasonal concession per 50kg bag verified against district cooperative buffer stocks.',
+    changeSummary: 'Special seasonal concession per 50kg bag verified against district cooperative buffer stocks.',
     trustScore: 92
   },
   {
     id: 'rec-4',
     schemeName: 'PMAY-G Phase IV Rural Housing Survey Guidelines',
+    category: 'Public Services',
     ministry: 'Ministry of Rural Development',
     gazetteRef: 'MoRD/RH/2026/883',
     status: 'Under Review',
-    auditor: 'Vandana Rao (Civil Rights Lead)',
+    auditor: 'Vandana Rao',
     lastUpdated: '5 hours ago',
     changeSummary: 'Revised exclusion criteria for households owning motorized 2-wheelers under review.',
     trustScore: 88
@@ -80,6 +86,7 @@ const INITIAL_RECORDS: ServiceAuditRecord[] = [
   {
     id: 'rec-5',
     schemeName: 'National Scholarship Portal Pre-Matric OTR Renewal',
+    category: 'Education',
     ministry: 'Ministry of Social Justice & Empowerment',
     gazetteRef: 'MSJE/SCH-2026/09',
     status: 'Pending',
@@ -90,11 +97,12 @@ const INITIAL_RECORDS: ServiceAuditRecord[] = [
   },
   {
     id: 'rec-6',
-    schemeName: 'Gram Panchayat Digital Survey & Drone Khatauni',
-    ministry: 'Survey of India / MoPR',
+    schemeName: 'Gram Panchayat Digital Property Card (SVAMITVA)',
+    category: 'Public Documents',
+    ministry: 'Ministry of Panchayati Raj',
     gazetteRef: 'SVAMITVA/2026/71',
     status: 'Verified',
-    auditor: 'R. K. Sen (Revenue Audit Officer)',
+    auditor: 'R. K. Sen',
     lastUpdated: '2 days ago',
     changeSummary: 'Property cards (Gharouni) legal validity cross-verified with State Land Revenue Codes.',
     trustScore: 100
@@ -178,118 +186,130 @@ export const AdminVerificationDashboard: React.FC<AdminVerificationDashboardProp
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
             {/* Step 1 */}
-            <div className="p-5 rounded-2xl bg-stone-800/80 border border-stone-700/80 flex flex-col justify-between">
+            <div className="p-4 rounded-2xl bg-stone-800/80 border border-stone-700/80 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="w-8 h-8 rounded-xl bg-emerald-900/60 text-emerald-300 border border-emerald-500/30 flex items-center justify-center font-mono font-bold text-xs">
+                  <span className="w-7 h-7 rounded-lg bg-emerald-900/60 text-emerald-300 border border-emerald-500/30 flex items-center justify-center font-mono font-bold text-xs">
                     01
                   </span>
-                  <FileCheck className="w-5 h-5 text-emerald-400" />
+                  <FileCheck className="w-4 h-4 text-emerald-400" />
                 </div>
-                <h4 className="font-display font-bold text-base sm:text-lg text-white mb-1">
-                  Admin Verification
+                <h4 className="font-display font-bold text-sm sm:text-base text-white mb-1">
+                  Admin Review
                 </h4>
                 <p className="text-xs text-stone-300 leading-relaxed">
-                  Civic analysts ingest gazette notifications, scheme guidelines, and direct benefit rules from official government sources.
+                  Civic analysts review official gazette notifications, scheme circulars, and entitlement rules.
                 </p>
               </div>
-              <div className="mt-4 pt-3 border-t border-stone-700/60 flex items-center gap-1.5 text-[11px] text-emerald-400 font-semibold">
+              <div className="mt-3 pt-2.5 border-t border-stone-700/60 flex items-center gap-1.5 text-[11px] text-emerald-400 font-semibold">
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>Human-in-the-Loop Audit</span>
+                <span>Human In The Loop</span>
               </div>
             </div>
 
             {/* Step 2 */}
-            <div className="p-5 rounded-2xl bg-stone-800/80 border border-stone-700/80 flex flex-col justify-between">
+            <div className="p-4 rounded-2xl bg-stone-800/80 border border-stone-700/80 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="w-8 h-8 rounded-xl bg-amber-900/60 text-amber-300 border border-amber-500/30 flex items-center justify-center font-mono font-bold text-xs">
+                  <span className="w-7 h-7 rounded-lg bg-amber-900/60 text-amber-300 border border-amber-500/30 flex items-center justify-center font-mono font-bold text-xs">
                     02
                   </span>
-                  <Database className="w-5 h-5 text-amber-400" />
+                  <Database className="w-4 h-4 text-amber-400" />
                 </div>
-                <h4 className="font-display font-bold text-base sm:text-lg text-white mb-1">
+                <h4 className="font-display font-bold text-sm sm:text-base text-white mb-1">
                   Verified Knowledge Base
                 </h4>
                 <p className="text-xs text-stone-300 leading-relaxed">
-                  Approved rules are stored in a cryptographically fingerprinted vector database with exact citation links and eligibility formulas.
+                  Approved rules are stored in an indexed knowledge base with exact citation links and eligibility formulas.
                 </p>
               </div>
-              <div className="mt-4 pt-3 border-t border-stone-700/60 flex items-center gap-1.5 text-[11px] text-amber-400 font-semibold">
+              <div className="mt-3 pt-2.5 border-t border-stone-700/60 flex items-center gap-1.5 text-[11px] text-amber-400 font-semibold">
                 <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Immutable Citation Layer</span>
+                <span>Zero Hallucination</span>
               </div>
             </div>
 
             {/* Step 3 */}
-            <div className="p-5 rounded-2xl bg-stone-800/80 border border-stone-700/80 flex flex-col justify-between">
+            <div className="p-4 rounded-2xl bg-stone-800/80 border border-stone-700/80 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="w-8 h-8 rounded-xl bg-emerald-900/60 text-emerald-300 border border-emerald-500/30 flex items-center justify-center font-mono font-bold text-xs">
+                  <span className="w-7 h-7 rounded-lg bg-teal-900/60 text-teal-300 border border-teal-500/30 flex items-center justify-center font-mono font-bold text-xs">
                     03
                   </span>
-                  <Bot className="w-5 h-5 text-emerald-400" />
+                  <Bot className="w-4 h-4 text-teal-400" />
                 </div>
-                <h4 className="font-display font-bold text-base sm:text-lg text-white mb-1">
-                  Accurate AI Response
+                <h4 className="font-display font-bold text-sm sm:text-base text-white mb-1">
+                  AI Service Matching
                 </h4>
                 <p className="text-xs text-stone-300 leading-relaxed">
-                  The LLM retrieves strictly from the Verified Knowledge Base. It cannot hallucinate or invent non-existent rules.
+                  Natural language processing matches citizen profiles to verified criteria in real time.
                 </p>
               </div>
-              <div className="mt-4 pt-3 border-t border-stone-700/60 flex items-center gap-1.5 text-[11px] text-emerald-400 font-semibold">
+              <div className="mt-3 pt-2.5 border-t border-stone-700/60 flex items-center gap-1.5 text-[11px] text-teal-400 font-semibold">
                 <Sparkles className="w-3.5 h-3.5" />
-                <span>Grounded Vernacular Output</span>
+                <span>Deterministic Rules</span>
+              </div>
+            </div>
+
+            {/* Step 4 */}
+            <div className="p-4 rounded-2xl bg-stone-800/80 border border-stone-700/80 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="w-7 h-7 rounded-lg bg-emerald-900/60 text-emerald-300 border border-emerald-500/30 flex items-center justify-center font-mono font-bold text-xs">
+                    04
+                  </span>
+                  <Compass className="w-4 h-4 text-emerald-400" />
+                </div>
+                <h4 className="font-display font-bold text-sm sm:text-base text-white mb-1">
+                  User Guidance
+                </h4>
+                <p className="text-xs text-stone-300 leading-relaxed">
+                  Citizens receive plain-language eligibility, required documents, and nearby service centers.
+                </p>
+              </div>
+              <div className="mt-3 pt-2.5 border-t border-stone-700/60 flex items-center gap-1.5 text-[11px] text-emerald-400 font-semibold">
+                <CheckCircle2 className="w-3.5 h-3.5" />
+                <span>Actionable Steps</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* 2. Top Metric KPI Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 sm:gap-4 mb-8">
+        {/* 2. Top Metric KPI Cards (4 Cards requested) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
           <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200">
             <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 block mb-1">
               Total Services
             </span>
             <div className="flex items-baseline gap-1">
               <span className="font-display text-2xl sm:text-3xl font-extrabold text-stone-900">{totalServices}</span>
-              <span className="text-xs text-stone-500 font-semibold">Schemes</span>
+              <span className="text-xs text-stone-500 font-semibold">Cataloged</span>
             </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200">
             <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 block mb-1">
-              Verified Services
+              Verified
             </span>
             <div className="flex items-baseline gap-1">
               <span className="font-display text-2xl sm:text-3xl font-extrabold text-emerald-900">{verifiedCount}</span>
-              <span className="text-xs text-emerald-700 font-semibold">Gazette OK</span>
+              <span className="text-xs text-emerald-700 font-semibold">Active</span>
             </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200">
             <span className="text-[11px] font-bold uppercase tracking-wider text-amber-800 block mb-1">
-              Under Review
+              Pending Review
             </span>
             <div className="flex items-baseline gap-1">
-              <span className="font-display text-2xl sm:text-3xl font-extrabold text-amber-900">{underReviewCount}</span>
-              <span className="text-xs text-amber-700 font-semibold">In Progress</span>
+              <span className="font-display text-2xl sm:text-3xl font-extrabold text-amber-900">{underReviewCount + pendingCount}</span>
+              <span className="text-xs text-amber-700 font-semibold">In Queue</span>
             </div>
           </div>
 
-          <div className="p-4 rounded-2xl bg-stone-100 border border-stone-200">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-stone-600 block mb-1">
-              Pending Audit
-            </span>
-            <div className="flex items-baseline gap-1">
-              <span className="font-display text-2xl sm:text-3xl font-extrabold text-stone-900">{pendingCount}</span>
-              <span className="text-xs text-stone-500 font-semibold">Queued</span>
-            </div>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-orange-50 border border-orange-200 col-span-2 sm:col-span-1">
+          <div className="p-4 rounded-2xl bg-orange-50 border border-orange-200">
             <span className="text-[11px] font-bold uppercase tracking-wider text-orange-800 block mb-1">
               User Reports
             </span>
@@ -302,11 +322,11 @@ export const AdminVerificationDashboard: React.FC<AdminVerificationDashboardProp
 
         {/* 3. Filter Bar & Interactive Service Audit Records */}
         <div className="bg-stone-50/70 rounded-3xl border border-stone-200 p-6 shadow-sm">
-          {/* Controls Bar */}
+          {/* Controls Bar & View Switcher */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-2">
               <Filter className="w-4 h-4 text-stone-500" />
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 flex-wrap">
                 {['all', 'Verified', 'Under Review', 'Pending'].map((status) => (
                   <button
                     key={status}
@@ -317,7 +337,7 @@ export const AdminVerificationDashboard: React.FC<AdminVerificationDashboardProp
                         : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-100'
                     }`}
                   >
-                    {status === 'all' ? 'All Records' : status}
+                    {status === 'all' ? 'All Services' : status}
                   </button>
                 ))}
               </div>
@@ -327,7 +347,7 @@ export const AdminVerificationDashboard: React.FC<AdminVerificationDashboardProp
               <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Search scheme or gazette ref..."
+                placeholder="Search service, category, or ref..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-3 py-1.5 bg-white border border-stone-300 rounded-xl text-xs text-stone-800 focus:outline-none focus:border-emerald-600"
@@ -335,96 +355,96 @@ export const AdminVerificationDashboard: React.FC<AdminVerificationDashboardProp
             </div>
           </div>
 
-          {/* Audit Records List */}
-          <div className="space-y-3.5">
-            {filteredRecords.map((rec) => {
-              const isVerified = rec.status === 'Verified';
-              const isUnderReview = rec.status === 'Under Review';
-              const isPending = rec.status === 'Pending';
-              const isRecentlyApproved = recentlyApprovedId === rec.id;
+          {/* Audit Records Table: Service | Category | Status | Last Updated */}
+          <div className="overflow-x-auto rounded-2xl border border-stone-200 bg-white shadow-2xs">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-stone-100/80 border-b border-stone-200 text-stone-600 text-[11px] font-bold uppercase tracking-wider">
+                  <th className="py-3.5 px-4 sm:px-6">Service</th>
+                  <th className="py-3.5 px-4">Category</th>
+                  <th className="py-3.5 px-4">Status</th>
+                  <th className="py-3.5 px-4 hidden md:table-cell">Last Updated</th>
+                  <th className="py-3.5 px-4 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone-100 text-xs sm:text-sm">
+                {filteredRecords.map((rec) => {
+                  const isVerified = rec.status === 'Verified';
+                  const isUnderReview = rec.status === 'Under Review';
+                  const isPending = rec.status === 'Pending';
+                  const isRecentlyApproved = recentlyApprovedId === rec.id;
 
-              return (
-                <div
-                  key={rec.id}
-                  className={`p-5 rounded-2xl border transition-all duration-200 ${
-                    isRecentlyApproved
-                      ? 'bg-emerald-50/90 border-emerald-500 ring-2 ring-emerald-500/20 shadow-md'
-                      : 'bg-white border-stone-200 hover:border-stone-300 shadow-2xs'
-                  }`}
-                >
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                    {/* Record Info */}
-                    <div className="max-w-2xl">
-                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                        {/* Status Badge */}
-                        <span className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+                  return (
+                    <tr 
+                      key={rec.id}
+                      className={`transition-colors hover:bg-stone-50/70 ${
+                        isRecentlyApproved ? 'bg-emerald-50/60' : ''
+                      }`}
+                    >
+                      {/* Service Column */}
+                      <td className="py-3.5 px-4 sm:px-6">
+                        <div className="font-bold text-stone-900 text-xs sm:text-sm">
+                          {rec.schemeName}
+                        </div>
+                        <div className="text-[11px] text-stone-500 font-medium">
+                          {rec.ministry} • <span className="font-mono">{rec.gazetteRef}</span>
+                        </div>
+                      </td>
+
+                      {/* Category Column */}
+                      <td className="py-3.5 px-4">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold bg-stone-100 text-stone-800 border border-stone-200">
+                          {rec.category}
+                        </span>
+                      </td>
+
+                      {/* Status Column with requested 🟡 Pending, 🔵 Under Review, 🟢 Verified */}
+                      <td className="py-3.5 px-4 whitespace-nowrap">
+                        <span className={`inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1 rounded-full ${
                           isVerified
-                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                            ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
                             : isUnderReview
-                            ? 'bg-amber-100 text-amber-900 border border-amber-300'
-                            : 'bg-stone-100 text-stone-700 border border-stone-300'
+                            ? 'bg-sky-100 text-sky-900 border border-sky-300'
+                            : 'bg-amber-100 text-amber-950 border border-amber-300'
                         }`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${
-                            isVerified ? 'bg-emerald-600' : isUnderReview ? 'bg-amber-600' : 'bg-stone-500'
+                          <span className={`w-2 h-2 rounded-full ${
+                            isVerified 
+                              ? 'bg-emerald-600' 
+                              : isUnderReview 
+                              ? 'bg-sky-600' 
+                              : 'bg-amber-500'
                           }`} />
                           {rec.status}
                         </span>
+                      </td>
 
-                        <span className="text-[11px] font-mono text-stone-500 bg-stone-100 px-2 py-0.5 rounded">
-                          Gazette: {rec.gazetteRef}
-                        </span>
+                      {/* Last Updated Column */}
+                      <td className="py-3.5 px-4 text-stone-600 font-medium hidden md:table-cell whitespace-nowrap text-xs">
+                        {rec.lastUpdated}
+                      </td>
 
-                        <span className="text-xs text-stone-400">
-                          Updated: {rec.lastUpdated}
-                        </span>
-                      </div>
-
-                      <h4 className="font-bold text-stone-900 text-base mb-1">
-                        {rec.schemeName}
-                      </h4>
-                      <p className="text-xs text-stone-500 font-medium mb-2">
-                        {rec.ministry}
-                      </p>
-                      <p className="text-xs text-stone-700 bg-stone-50 p-2.5 rounded-xl border border-stone-200/70 leading-relaxed font-normal">
-                        <span className="font-semibold text-stone-900">Audit Scope:</span> {rec.changeSummary}
-                      </p>
-                    </div>
-
-                    {/* Auditor Info & Action CTA */}
-                    <div className="flex lg:flex-col items-center lg:items-end justify-between gap-3 shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-stone-100">
-                      <div className="text-right">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-stone-400 block">
-                          Assigned Auditor:
-                        </span>
-                        <span className="text-xs font-bold text-stone-800">
-                          {rec.auditor}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        {!isVerified && (
+                      {/* Action Button */}
+                      <td className="py-3.5 px-4 text-right whitespace-nowrap">
+                        {!isVerified ? (
                           <button
                             type="button"
                             onClick={() => handleApproveRecord(rec.id)}
-                            className="px-3.5 py-1.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold shadow-2xs transition-colors flex items-center gap-1.5"
+                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold shadow-2xs transition-colors"
                           >
                             <CheckCircle2 className="w-3.5 h-3.5" />
-                            <span>Approve & Verify</span>
+                            <span>Verify</span>
                           </button>
+                        ) : (
+                          <span className="text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2 py-1 rounded border border-emerald-200">
+                            Approved
+                          </span>
                         )}
-                        <button
-                          type="button"
-                          className="px-3 py-1.5 rounded-xl bg-white hover:bg-stone-100 text-stone-700 border border-stone-300 text-xs font-semibold transition-colors flex items-center gap-1"
-                        >
-                          <Eye className="w-3.5 h-3.5 text-stone-500" />
-                          <span>View Rules</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

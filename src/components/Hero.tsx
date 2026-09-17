@@ -131,7 +131,7 @@ export const Hero: React.FC<HeroProps> = ({
 
           {/* User Requested Exact Subtitle */}
           <p className="text-lg sm:text-xl text-stone-700 font-medium leading-relaxed max-w-3xl mx-auto mb-6">
-            One AI-powered platform to discover government schemes, healthcare, education, agriculture support, and essential public services.
+            One simple platform to discover government schemes, healthcare, education, agriculture support, and essential public services in your language.
           </p>
 
           {/* Hero Multilingual Language Selector */}
@@ -172,7 +172,7 @@ export const Hero: React.FC<HeroProps> = ({
                   id="hero-search-input"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Ask in your language: e.g., I am a farmer. What agriculture support is available?"
+                  placeholder="Ask a question in your language…"
                   className="w-full py-2 px-1 text-sm sm:text-base font-medium text-stone-800 bg-transparent placeholder-stone-400 focus:outline-none"
                 />
 
@@ -196,13 +196,13 @@ export const Hero: React.FC<HeroProps> = ({
                   )}
                 </button>
 
-                {/* Submit Action Button */}
+                {/* Submit / Send Action Button */}
                 <button
                   type="submit"
                   id="hero-search-submit-btn"
-                  className="shrink-0 hidden sm:inline-flex items-center justify-center gap-1.5 px-5 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                  className="shrink-0 inline-flex items-center justify-center gap-1.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs sm:text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-emerald-600"
                 >
-                  <span>{t.hero.searchBtn}</span>
+                  <span>Send</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>

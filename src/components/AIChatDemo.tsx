@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Bot, 
@@ -38,6 +38,12 @@ export const AIChatDemo: React.FC<AIChatDemoProps> = ({ currentLang }) => {
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [audioTimer, setAudioTimer] = useState<NodeJS.Timeout | null>(null);
+
+  // Synchronize query when user switches language from navbar or hero
+  useEffect(() => {
+    setInputQuery(demoData.defaultUserQuery);
+    setActiveQuery(demoData.defaultUserQuery);
+  }, [currentLang, demoData.defaultUserQuery]);
 
   const handlePromptSelect = (prompt: string) => {
     setInputQuery(prompt);

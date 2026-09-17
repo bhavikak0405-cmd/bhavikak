@@ -13,12 +13,243 @@ import {
 import { Language } from '../types';
 import { NAVIGATOR_SECTIONS_DATA } from '../data/navigatorFeatures';
 
+const PROBLEM_DATA_LOCALIZED: Record<Language, {
+  badge: string;
+  title: string;
+  subtitle: string;
+  cards: {
+    id: string;
+    number: string;
+    title: string;
+    subtitle: string;
+    description: string;
+    tag: string;
+    highlight: string;
+  }[];
+}> = {
+  en: {
+    badge: 'The Access Gap',
+    title: 'Why Rural Communities Need Better Access',
+    subtitle: 'Public benefits and essential services exist, but rural citizens face critical hurdles across multiple stages.',
+    cards: [
+      {
+        id: 'scattered-info',
+        number: '01',
+        title: 'Scattered Information',
+        subtitle: 'Fragmented Portals',
+        description: 'Important services are spread across different platforms.',
+        tag: 'Information Void',
+        highlight: 'Services buried across 50+ departmental portals'
+      },
+      {
+        id: 'language-barriers',
+        number: '02',
+        title: 'Language Barriers',
+        subtitle: 'Language Gap',
+        description: 'Information may not be available in languages users are comfortable with.',
+        tag: 'Linguistic Divide',
+        highlight: 'Complex legal English instead of regional mother tongues'
+      },
+      {
+        id: 'difficult-to-understand',
+        number: '03',
+        title: 'Difficult to Understand',
+        subtitle: 'Complex Criteria',
+        description: 'Eligibility and application procedures can be confusing.',
+        tag: 'Complexity',
+        highlight: 'Confusing eligibility rules and hidden documentation criteria'
+      },
+      {
+        id: 'centralized-guidance',
+        number: '04',
+        title: 'Lack of Centralized Guidance',
+        subtitle: 'Disconnected Support',
+        description: 'Users have to search multiple sources to find the right service.',
+        tag: 'No Single Source',
+        highlight: 'No unified roadmap or step-by-step application walkthrough'
+      }
+    ]
+  },
+  hi: {
+    badge: 'पहुंच की कमी',
+    title: 'ग्रामीण समुदायों को बेहतर पहुंच की आवश्यकता क्यों है',
+    subtitle: 'सरकारी सेवाएं और योजनाएं मौजूद हैं, लेकिन ग्रामीणों को उन तक पहुंचने में बड़ी बाधाओं का सामना करना पड़ता है।',
+    cards: [
+      {
+        id: 'scattered-info',
+        number: '01',
+        title: 'बिखरी हुई जानकारी',
+        subtitle: 'अलग-अलग पोर्टल',
+        description: 'महत्वपूर्ण सेवाएं विभिन्न प्लेटफार्मों पर बिखरी हुई हैं।',
+        tag: 'जानकारी का बिखराव',
+        highlight: 'दर्जनों मंत्रालयों के अलग-अलग वेबसाइट'
+      },
+      {
+        id: 'language-barriers',
+        number: '02',
+        title: 'भाषा की बाधा',
+        subtitle: 'भाषाई दूरी',
+        description: 'जानकारी उन भाषाओं में उपलब्ध नहीं हो सकती है जिनमें नागरिक सहज हैं।',
+        tag: 'भाषा अंतर',
+        highlight: 'कठिन अंग्रेजी और कानूनी शब्दावली'
+      },
+      {
+        id: 'difficult-to-understand',
+        number: '03',
+        title: 'समझने में कठिन',
+        subtitle: 'जटिल नियम',
+        description: 'पात्रता और आवेदन प्रक्रियाएं भ्रमित करने वाली हो सकती हैं।',
+        tag: 'जटिलता',
+        highlight: 'अस्पष्ट शर्तें और आवश्यक दस्तावेजों का भ्रम'
+      },
+      {
+        id: 'centralized-guidance',
+        number: '04',
+        title: 'केंद्रीकृत मार्गदर्शन का अभाव',
+        subtitle: 'एकल सहायता नहीं',
+        description: 'उपयोगकर्ताओं को सही सेवा खोजने के लिए कई स्रोतों को खोजना पड़ता है।',
+        tag: 'कोई एकल मंच नहीं',
+        highlight: 'अंतिम छोर तक चरणबद्ध मार्गदर्शन की अनुपस्थिति'
+      }
+    ]
+  },
+  ta: {
+    badge: 'அணுகல் இடைவெளி',
+    title: 'கிராமப்புற சமூகங்களுக்கு சிறந்த அணுகல் ஏன் தேவைப்படுகிறது',
+    subtitle: 'திட்டங்கள் உள்ளன, ஆனால் கிராமப்புற குடிமக்கள் அரசு சேவைகளைப் பெற பல தடைகளை எதிர்கொள்கின்றனர்.',
+    cards: [
+      {
+        id: 'scattered-info',
+        number: '01',
+        title: 'சிதறிய தகவல்கள்',
+        subtitle: 'பல இணையதளங்கள்',
+        description: 'முக்கியமான சேவைகள் வெவ்வேறு தளங்களில் சிதறிக் கிடக்கின்றன.',
+        tag: 'தகவல் சிதறல்',
+        highlight: 'பல்வேறு துறை இணையதளங்களில் மறைந்துள்ள தகவல்'
+      },
+      {
+        id: 'language-barriers',
+        number: '02',
+        title: 'மொழி தடைகள்',
+        subtitle: 'மொழி இடைவெளி',
+        description: 'பயனர்கள் வசதியாகப் பயன்படுத்தும் மொழிகளில் தகவல் கிடைக்காமல் இருக்கலாம்.',
+        tag: 'மொழி தடை',
+        highlight: 'கடினமான ஆங்கில அரசாணைகள்'
+      },
+      {
+        id: 'difficult-to-understand',
+        number: '03',
+        title: 'புரிந்துகொள்வது கடினம்',
+        subtitle: 'சிக்கலான விதிகள்',
+        description: 'தகுதி மற்றும் விண்ணப்ப நடைமுறைகள் குழப்பமாக இருக்கலாம்.',
+        tag: 'சிக்கலான முறை',
+        highlight: 'குழப்பமான தகுதி நிபந்தனைகள்'
+      },
+      {
+        id: 'centralized-guidance',
+        number: '04',
+        title: 'ஒருங்கிணைந்த வழிகாட்டுதல் இல்லாமை',
+        subtitle: 'ஒருங்கிணைப்பு இன்மை',
+        description: 'சரியான சேவையை கண்டறிய பயனர்கள் பல ஆதாரங்களை தேட வேண்டியுள்ளது.',
+        tag: 'ஒற்றைத் தளம் இன்மை',
+        highlight: 'படிப்படியான வழிகாட்டுதல் இல்லாத நிலை'
+      }
+    ]
+  },
+  te: {
+    badge: 'సేవా లభ్యత లోపం',
+    title: 'గ్రామీణ వర్గాలకు మెరుగైన ప్రాప్యత ఎందుకు అవసరం',
+    subtitle: 'ప్రజా సంక్షేమ పథకాలు ఉన్నప్పటికీ, గ్రామీణ ప్రజలు వాటిని పొందడంలో తీవ్ర సమస్యలను ఎదుర్కొంటున్నారు.',
+    cards: [
+      {
+        id: 'scattered-info',
+        number: '01',
+        title: 'చెల్లాచెదురైన సమాచారం',
+        subtitle: 'వివిధ పోర్టల్స్',
+        description: 'ముఖ్యమైన సేవలు వివిధ వేదికలలో విస్తరించి ఉన్నాయి.',
+        tag: 'సమాచార లోపం',
+        highlight: 'వివిధ శాఖల మధ్య విడిపోయిన డేటా'
+      },
+      {
+        id: 'language-barriers',
+        number: '02',
+        title: 'భాషా అడ్డంకులు',
+        subtitle: 'స్థానిక భాషా లోపం',
+        description: 'వినియోగదారులకు అనుకూలమైన భాషలలో సమాచారం అందుబాటులో ఉండకపోవచ్చు.',
+        tag: 'భాషా సమస్య',
+        highlight: 'క్లిష్టమైన ఆంగ్ల ప్రభుత్వ ఉత్తర్వులు'
+      },
+      {
+        id: 'difficult-to-understand',
+        number: '03',
+        title: 'అర్థం చేసుకోవడం కష్టం',
+        subtitle: 'సంక్లిష్ట నిబంధనలు',
+        description: 'అర్హత మరియు దరఖాస్తు విధానాలు గందరగోళంగా ఉండవచ్చు.',
+        tag: 'సంక్లిష్టత',
+        highlight: 'స్పష్టత లేని డాక్యుమెంట్ అవసరాలు'
+      },
+      {
+        id: 'centralized-guidance',
+        number: '04',
+        title: 'కేంద్రీకృత మార్గదర్శకత్వం లేకపోవడం',
+        subtitle: 'ఒకే వేదిక లోపం',
+        description: 'సరైన సేవను కనుగొనడానికి వినియోగదారులు బహుళ వనరులను శోధించాల్సి ఉంటుంది.',
+        tag: 'కేంద్రీకృత లోపం',
+        highlight: 'దశలవారీగా సహాయం లేని స్థితి'
+      }
+    ]
+  },
+  bn: {
+    badge: 'সুযোগের ব্যবধান',
+    title: 'গ্রামীণ সম্প্রদায়ের জন্য কেন উন্নত প্রবেশাধিকার প্রয়োজন',
+    subtitle: 'সরকারি জনকল্যাণমূলক প্রকল্প থাকা সত্ত্বেও গ্রামীণ মানুষ পরিষেবা পেতে নানাবিধ সমস্যার সম্মুখীন হন।',
+    cards: [
+      {
+        id: 'scattered-info',
+        number: '01',
+        title: 'বিক্ষিপ্ত তথ্য',
+        subtitle: 'বিভিন্ন পোর্টাল',
+        description: 'গুরুত্বপূর্ণ পরিষেবাগুলি বিভিন্ন প্ল্যাটফর্মে ছড়িয়ে ছিটিয়ে রয়েছে।',
+        tag: 'তথ্যের অভাব',
+        highlight: 'বহুবিধ সরকারি পোর্টালে বিভক্ত'
+      },
+      {
+        id: 'language-barriers',
+        number: '02',
+        title: 'ভাষাগত বাধা',
+        subtitle: 'ভাষার ব্যবধান',
+        description: 'ব্যবহারকারীদের সুবিধাজনক ভাষায় তথ্য উপলব্ধ নাও হতে পারে।',
+        tag: 'ভাষাগত দূরত্ব',
+        highlight: 'আইনি ইংরেজি ভাষার জটিলতা'
+      },
+      {
+        id: 'difficult-to-understand',
+        number: '03',
+        title: 'বোঝা কঠিন',
+        subtitle: 'জটিল নিয়মাবলী',
+        description: 'যোগ্যতা এবং আবেদন পদ্ধতি বিভ্রান্তিকর হতে পারে।',
+        tag: 'জটিলতা',
+        highlight: 'বিভ্রান্তিকর শর্ত ও কাগজপত্র'
+      },
+      {
+        id: 'centralized-guidance',
+        number: '04',
+        title: 'কেন্দ্রীভূত নির্দেশনার অভাব',
+        subtitle: 'সমন্বয়ের অভাব',
+        description: 'সঠিক পরিষেবা খুঁজে পেতে ব্যবহারকারীদের একাধিক উৎস অনুসন্ধান করতে হয়।',
+        tag: 'একক প্ল্যাটফর্মের অভাব',
+        highlight: 'ধারাবাহিক নির্দেশিকার অনুপস্থিতি'
+      }
+    ]
+  }
+};
+
 interface ProblemStatementProps {
   currentLang: Language;
 }
 
 export const ProblemStatement: React.FC<ProblemStatementProps> = ({ currentLang }) => {
-  const data = NAVIGATOR_SECTIONS_DATA[currentLang].problem;
+  const data = PROBLEM_DATA_LOCALIZED[currentLang] || PROBLEM_DATA_LOCALIZED.en;
 
   const getProblemIcon = (id: string) => {
     switch (id) {
@@ -26,8 +257,8 @@ export const ProblemStatement: React.FC<ProblemStatementProps> = ({ currentLang 
         return <FileSpreadsheet className="w-6 h-6 text-amber-700" />;
       case 'language-barriers':
         return <Languages className="w-6 h-6 text-orange-700" />;
-      case 'low-accessibility':
-        return <WifiOff className="w-6 h-6 text-red-700" />;
+      case 'difficult-to-understand':
+        return <AlertTriangle className="w-6 h-6 text-red-700" />;
       case 'centralized-guidance':
         return <ShieldAlert className="w-6 h-6 text-rose-700" />;
       default:
@@ -149,21 +380,12 @@ export const ProblemStatement: React.FC<ProblemStatementProps> = ({ currentLang 
                   </p>
                 </div>
 
-                {/* Bottom Metric & Solution Pivot */}
+                {/* Bottom Highlight & Impact */}
                 <div className="pt-4 border-t border-stone-200/80">
-                  <div className="mb-3">
-                    <div className={`font-display text-2xl sm:text-3xl font-black ${styles.stat} tracking-tight`}>
-                      {card.impactStat}
-                    </div>
-                    <div className="text-[11px] font-medium text-stone-500 leading-snug mt-0.5">
-                      {card.statLabel}
-                    </div>
-                  </div>
-
-                  <div className="mt-3 p-2.5 rounded-xl bg-white border border-stone-200/90 flex items-start gap-2 shadow-2xs">
+                  <div className="p-2.5 rounded-xl bg-white border border-stone-200/90 flex items-start gap-2 shadow-2xs">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700 shrink-0 mt-0.5" />
-                    <span className="text-[11px] font-semibold text-emerald-950 leading-tight">
-                      {card.solutionSnippet}
+                    <span className="text-xs font-semibold text-stone-800 leading-snug">
+                      {card.highlight}
                     </span>
                   </div>
                 </div>

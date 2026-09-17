@@ -31,28 +31,37 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ currentLang }) => 
       id: 'easier-discovery',
       icon: <Compass className="w-6 h-6 text-emerald-800" />,
       title: 'Easier Discovery',
-      subtitle: 'Proactive Scheme Navigation',
-      badge: 'Civic Access',
-      description: 'Rural citizens no longer need to navigate dozens of conflicting state and central department portals. Spoken or typed inquiries instantly reveal relevant agricultural subsidies, social pensions, and maternal healthcare benefits.',
-      pillar: 'Zero Intermediary Exploitation'
+      subtitle: 'Single Search & Navigator',
+      badge: 'Unified Access',
+      description: 'Users can find relevant services from one platform without searching through dozens of disconnected websites or department offices.',
+      pillar: 'Comprehensive Service Catalog'
     },
     {
       id: 'better-understanding',
       icon: <BookOpenCheck className="w-6 h-6 text-amber-700" />,
       title: 'Better Understanding',
-      subtitle: 'Plain Vernacular Clarity',
-      badge: 'Language Equity',
-      description: 'Complex legal and bureaucratic gazette notifications are synthesized into simple conversational language. Citizens clearly understand whether they qualify before spending money on bus travel to government offices.',
-      pillar: 'Transparent Entitlements'
+      subtitle: 'Plain Language Clarity',
+      badge: 'Transparent Rules',
+      description: 'Complex information is presented in simple language so citizens can immediately understand benefits and criteria without confusion.',
+      pillar: 'Zero Bureaucratic Jargon'
     },
     {
-      id: 'improved-accessibility',
+      id: 'multilingual-access',
       icon: <Wifi className="w-6 h-6 text-orange-700" />,
-      title: 'Improved Accessibility',
-      subtitle: 'Voice & Assisted Modes',
-      badge: 'Universal Reach',
-      description: 'Equipped with voice interaction and local dialect support, the platform empowers low-literacy citizens, rural women, and village elders. Also serves as an assisted workbench for Common Service Centre (CSC) operators.',
-      pillar: 'Last-Mile Digital Inclusion'
+      title: 'Multilingual Access',
+      subtitle: 'Voice & Local Languages',
+      badge: 'Linguistic Inclusion',
+      description: 'Users can interact using supported regional languages through text or voice to ensure nobody is left behind due to language barriers.',
+      pillar: 'Regional Mother Tongues'
+    },
+    {
+      id: 'centralized-guidance',
+      icon: <Layers className="w-6 h-6 text-teal-700" />,
+      title: 'Centralized Guidance',
+      subtitle: 'Step-by-Step Walkthrough',
+      badge: 'End-to-End Roadmap',
+      description: 'Service information, eligibility, documents, and application guidance are organized together in one complete workflow.',
+      pillar: 'Full Application Clarity'
     }
   ];
 
@@ -66,15 +75,15 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ currentLang }) => 
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-950 border border-emerald-300 text-xs font-bold uppercase tracking-wider mb-3 shadow-2xs">
             <HeartHandshake className="w-3.5 h-3.5 text-emerald-700" />
-            <span>Qualitative Impact & Transformation</span>
+            <span>Civic Purpose & Outcomes</span>
           </div>
 
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-stone-900 tracking-tight mb-4">
-            Expected Impact & Transformation
+            Making Rural Services Easier to Access
           </h2>
 
           <p className="text-stone-600 text-base sm:text-lg leading-relaxed">
-            How centralizing rural service discovery bridges the digital divide and transforms citizen outcomes across India's villages.
+            By unifying discovery, translation, eligibility verification, and application guidance into one accessible platform.
           </p>
         </div>
 
@@ -198,8 +207,8 @@ export const ImpactSection: React.FC<ImpactSectionProps> = ({ currentLang }) => 
           </div>
         </div>
 
-        {/* 3 Qualitative Core Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        {/* 4 Core Transformation Pillars */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {qualitativeOutcomes.map((item) => (
             <div
               key={item.id}

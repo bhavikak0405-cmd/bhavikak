@@ -18,7 +18,10 @@ import {
   ShieldCheck,
   Phone,
   Layers,
-  ArrowUpRight
+  ArrowUpRight,
+  X,
+  Compass,
+  Info
 } from 'lucide-react';
 import { Language } from '../types';
 
@@ -385,6 +388,63 @@ const SERVICE_CATEGORIES: ServiceCategory[] = [
     ]
   },
   {
+    id: 'women-child',
+    iconName: 'HeartPulse',
+    emoji: '👩‍👧',
+    title: {
+      en: 'Women & Child Support',
+      hi: 'महिला एवं बाल विकास',
+      ta: 'பெண்கள் & குழந்தைகள் நலம்',
+      te: 'మహిళా & శిశు సంక్షేమం',
+      bn: 'নারী ও শিশু সুরক্ষা'
+    },
+    description: {
+      en: 'Maternity financial assistance, Poshan Anganwadi nutrition, and girl child educational funds.',
+      hi: 'मातृत्व सहायता, आंगनवाड़ी पोषण कार्यक्रम और कन्या समृद्धि योजना।',
+      ta: 'தாய்மை நிதி உதவி, அங்கன்வாடி ஊட்டச்சத்து திட்டம் மற்றும் பெண் குழந்தை பாதுகாப்பு.',
+      te: 'గర్భిణీ స్త్రీలకు ఆర్థిక సహాయం, అంగన్‌వాడీ పోషకాహారం మరియు సుకన్య సమృద్ధి యోజన.',
+      bn: 'মাতৃত্বকালীন আর্থিক সহায়তা, অঙ্গনওয়াড়ি পুষ্টি প্রকল্প এবং কন্যা সুরক্ষা সঞ্চয়।'
+    },
+    services: [
+      {
+        id: 'pmmvy',
+        name: 'Pradhan Mantri Matru Vandana Yojana (PMMVY)',
+        department: 'Ministry of Women and Child Development',
+        badge: 'Direct Cash Transfer',
+        benefit: '₹5,000 in two installments for first live birth and ₹6,000 for second girl child birth for nutrition and rest.',
+        eligibility: 'Pregnant Women and Lactating Mothers (PW&LM) with family income under ₹8 Lakhs or holding BPL/EWS cards.',
+        documents: ['Mother & Father Aadhaar', 'MCP (Mother and Child Protection) Card', 'Bank Passbook linked with Aadhaar'],
+        helpline: '14408 / 181 (Women Helpline)',
+        officialPortal: 'https://pmmvy.wcd.gov.in',
+        sampleStatus: 'Active DBT • Online Self-Registration'
+      },
+      {
+        id: 'sukanya-samriddhi',
+        name: 'Sukanya Samriddhi Yojana (SSY)',
+        department: 'Department of Posts / Ministry of Finance',
+        badge: '8.2% Guaranteed Return',
+        benefit: 'High-interest tax-free savings account for girl children up to age 10 with flexible yearly deposits from ₹250 to ₹1,50,000.',
+        eligibility: 'Parents or legal guardians of a girl child resident in India below 10 years of age.',
+        documents: ['Girl child Birth Certificate', 'Guardian Aadhaar & PAN Card', 'Address proof from Post Office / Panchayat'],
+        helpline: '1800-266-6868 (India Post)',
+        officialPortal: 'https://www.indiapost.gov.in',
+        sampleStatus: 'Open at All Branch Post Offices'
+      },
+      {
+        id: 'poshan-anganwadi',
+        name: 'POSHAN 2.0 & Anganwadi Services',
+        department: 'Ministry of Women and Child Development',
+        badge: 'Supplementary Nutrition',
+        benefit: 'Daily hot cooked nutritious meals, morning snacks, and Take-Home Rations (THR) for pregnant women and children 6 months to 6 years.',
+        eligibility: 'All rural children under 6 years, pregnant mothers, and lactating women in village Anganwadi catchment.',
+        documents: ['Child Aadhaar / Birth certificate', 'Mother Aadhaar', 'Village Anganwadi registration number'],
+        helpline: '14408',
+        officialPortal: 'https://poshantracker.in',
+        sampleStatus: 'Daily Growth Monitoring at Anganwadi'
+      }
+    ]
+  },
+  {
     id: 'nearby-centers',
     iconName: 'MapPin',
     emoji: '📍',
@@ -442,6 +502,7 @@ export const ServiceExplorer: React.FC<ServiceExplorerProps> = ({
 }) => {
   const [activeCategoryId, setActiveCategoryId] = useState<string>('gov-schemes');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [selectedDetailService, setSelectedDetailService] = useState<ServiceItem | null>(null);
 
   const activeCategory = SERVICE_CATEGORIES.find(c => c.id === activeCategoryId) || SERVICE_CATEGORIES[0];
 
@@ -510,8 +571,8 @@ export const ServiceExplorer: React.FC<ServiceExplorerProps> = ({
           </p>
         </div>
 
-        {/* 8 Category Selection Tabs */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5 sm:gap-3 mb-10">
+        {/* 9 Category Selection Tabs */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2 sm:gap-2.5 mb-10">
           {SERVICE_CATEGORIES.map((category) => {
             const isSelected = category.id === activeCategoryId;
             return (
@@ -522,14 +583,14 @@ export const ServiceExplorer: React.FC<ServiceExplorerProps> = ({
                   setActiveCategoryId(category.id);
                   setSearchQuery('');
                 }}
-                className={`p-3.5 sm:p-4 rounded-2xl flex flex-col items-center justify-center text-center transition-all duration-200 border relative ${
+                className={`p-3 rounded-2xl flex flex-col items-center justify-center text-center transition-all duration-200 border relative ${
                   isSelected
                     ? 'bg-emerald-800 text-white border-emerald-900 shadow-md shadow-emerald-900/20 scale-[1.02] ring-2 ring-emerald-600/30'
                     : 'bg-white text-stone-700 border-stone-200 hover:border-emerald-300 hover:bg-stone-50/80 shadow-2xs'
                 }`}
               >
-                <span className="text-2xl sm:text-3xl mb-1.5 block">{category.emoji}</span>
-                <span className={`text-xs font-bold leading-tight line-clamp-2 ${isSelected ? 'text-white' : 'text-stone-800'}`}>
+                <span className="text-2xl mb-1 block">{category.emoji}</span>
+                <span className={`text-[11px] font-bold leading-tight line-clamp-2 ${isSelected ? 'text-white' : 'text-stone-800'}`}>
                   {category.title[currentLang] || category.title.en}
                 </span>
                 {isSelected && (
@@ -586,14 +647,19 @@ export const ServiceExplorer: React.FC<ServiceExplorerProps> = ({
                 >
                   {/* Top Details */}
                   <div className="p-6">
-                    {/* Badges */}
-                    <div className="flex items-center justify-between gap-2 mb-3">
-                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+                    {/* Badges: Category + Language tag + Verification */}
+                    <div className="flex items-center justify-between gap-2 mb-3 flex-wrap">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-stone-100 text-stone-800 border border-stone-200">
+                          {activeCategory.title[currentLang] || activeCategory.title.en}
+                        </span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-50 text-amber-900 border border-amber-200">
+                          🌐 5 Languages
+                        </span>
+                      </div>
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
                         <Sparkles className="w-3 h-3 text-emerald-600" />
                         {service.badge}
-                      </span>
-                      <span className="text-[10px] font-mono font-semibold text-stone-400">
-                        {service.sampleStatus}
                       </span>
                     </div>
 
@@ -601,12 +667,12 @@ export const ServiceExplorer: React.FC<ServiceExplorerProps> = ({
                     <h4 className="font-display text-lg sm:text-xl font-bold text-stone-900 group-hover:text-emerald-800 transition-colors mb-1">
                       {service.name}
                     </h4>
-                    <p className="text-xs text-stone-500 font-medium mb-4">
+                    <p className="text-xs text-stone-500 font-medium mb-3">
                       {service.department}
                     </p>
 
                     {/* Key Benefit Highlight */}
-                    <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-200/80 mb-4">
+                    <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-200/80 mb-3.5">
                       <span className="text-[11px] font-bold uppercase tracking-wider text-amber-900 block mb-0.5">
                         Key Entitlement & Support
                       </span>
@@ -616,11 +682,11 @@ export const ServiceExplorer: React.FC<ServiceExplorerProps> = ({
                     </div>
 
                     {/* Eligibility Summary */}
-                    <div className="mb-4">
+                    <div className="mb-3.5">
                       <span className="text-xs font-bold text-stone-700 block mb-1">
                         Basic Eligibility:
                       </span>
-                      <p className="text-xs text-stone-600 leading-relaxed">
+                      <p className="text-xs text-stone-600 leading-relaxed line-clamp-3">
                         {service.eligibility}
                       </p>
                     </div>
@@ -628,45 +694,62 @@ export const ServiceExplorer: React.FC<ServiceExplorerProps> = ({
                     {/* Required Documents checklist */}
                     <div>
                       <span className="text-xs font-bold text-stone-700 block mb-1.5">
-                        Essential Documents:
+                        Required Documents:
                       </span>
                       <ul className="space-y-1">
                         {service.documents.map((doc, dIdx) => (
                           <li key={dIdx} className="flex items-center gap-1.5 text-xs text-stone-600">
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                            <span>{doc}</span>
+                            <span className="truncate">{doc}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
                   </div>
 
-                  {/* Card Action Footer */}
-                  <div className="p-4 bg-stone-50/80 border-t border-stone-200/80 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-1.5 text-[11px] text-stone-500">
-                      <Phone className="w-3.5 h-3.5 text-emerald-700" />
-                      <span className="font-semibold text-stone-700">{service.helpline}</span>
+                  {/* Card Action Footer: 3 Action Buttons (Check Eligibility, View Details, Find Service Center) */}
+                  <div className="p-4 bg-stone-50/80 border-t border-stone-200/80 space-y-2.5">
+                    <div className="flex items-center justify-between gap-2 text-[11px] text-stone-500">
+                      <div className="flex items-center gap-1">
+                        <Phone className="w-3.5 h-3.5 text-emerald-700" />
+                        <span className="font-semibold text-stone-700">{service.helpline}</span>
+                      </div>
+                      <span className="text-[10px] font-mono font-semibold text-stone-400">
+                        {service.sampleStatus}
+                      </span>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <a
-                        href={service.officialPortal}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="p-2 rounded-lg text-stone-600 hover:text-emerald-800 hover:bg-stone-200/60 transition-colors"
-                        title="Official Government Portal"
-                        aria-label={`Official portal for ${service.name}`}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-
+                    <div className="grid grid-cols-3 gap-1.5 pt-1">
+                      {/* 1. Check Eligibility */}
                       <a
                         href="#eligibility-guidance"
                         onClick={() => onSelectServiceForGuidance?.(service.id)}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold shadow-2xs transition-colors"
+                        className="py-1.5 px-2 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-white text-[11px] font-bold transition-colors text-center shadow-2xs flex items-center justify-center gap-1"
+                        title="Check your eligibility criteria"
                       >
-                        <span>Eligibility Guide</span>
-                        <ChevronRight className="w-3.5 h-3.5" />
+                        <CheckCircle2 className="w-3 h-3 shrink-0" />
+                        <span className="truncate">Eligibility</span>
+                      </a>
+
+                      {/* 2. View Details */}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedDetailService(service)}
+                        className="py-1.5 px-2 rounded-lg bg-white hover:bg-stone-100 text-stone-700 border border-stone-300 text-[11px] font-semibold transition-colors text-center flex items-center justify-center gap-1"
+                        title="View complete scheme details"
+                      >
+                        <Info className="w-3 h-3 text-stone-500 shrink-0" />
+                        <span className="truncate">Details</span>
+                      </button>
+
+                      {/* 3. Find Service Center */}
+                      <a
+                        href="#nearby-services"
+                        className="py-1.5 px-2 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 border border-stone-300 text-[11px] font-semibold transition-colors text-center flex items-center justify-center gap-1"
+                        title="Locate nearest CSC or PHC"
+                      >
+                        <MapPin className="w-3 h-3 text-emerald-700 shrink-0" />
+                        <span className="truncate">Centers</span>
                       </a>
                     </div>
                   </div>
@@ -678,15 +761,111 @@ export const ServiceExplorer: React.FC<ServiceExplorerProps> = ({
                 <p className="text-base font-bold text-stone-700">No services match your search query</p>
                 <p className="text-xs text-stone-500 mt-1">Try searching for "Subsidy", "Card", or "Pension"</p>
                 <button
+                  type="button"
                   onClick={() => setSearchQuery('')}
-                  className="mt-3 px-4 py-1.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-800 text-xs font-semibold"
+                  className="mt-3 px-4 py-1.5 rounded-lg bg-emerald-800 text-white text-xs font-bold"
                 >
-                  Clear search
+                  Clear Filter
                 </button>
               </div>
             )}
           </AnimatePresence>
         </div>
+
+        {/* View Details Interactive Modal */}
+        <AnimatePresence>
+          {selectedDetailService && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="bg-white rounded-3xl border border-stone-200 shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative"
+              >
+                {/* Modal Close Button */}
+                <button
+                  type="button"
+                  onClick={() => setSelectedDetailService(null)}
+                  className="absolute top-5 right-5 p-2 rounded-full hover:bg-stone-100 text-stone-500 transition-colors"
+                  aria-label="Close modal"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-bold px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-300">
+                    {selectedDetailService.badge}
+                  </span>
+                  <span className="text-xs font-semibold px-2.5 py-0.5 rounded-md bg-stone-100 text-stone-600">
+                    {selectedDetailService.sampleStatus}
+                  </span>
+                </div>
+
+                <h3 className="font-display text-2xl font-bold text-stone-900 mb-1">
+                  {selectedDetailService.name}
+                </h3>
+                <p className="text-xs sm:text-sm text-stone-500 font-medium mb-6">
+                  {selectedDetailService.department}
+                </p>
+
+                <div className="space-y-4 text-xs sm:text-sm">
+                  <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-amber-900 block mb-1">
+                      Direct Entitlement & Financial Support
+                    </span>
+                    <p className="font-semibold text-stone-900 leading-relaxed">
+                      {selectedDetailService.benefit}
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-stone-700 block mb-1">
+                      Eligibility Criteria
+                    </span>
+                    <p className="text-stone-700 leading-relaxed">
+                      {selectedDetailService.eligibility}
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-stone-700 block mb-2">
+                      Required Documents Checklist
+                    </span>
+                    <ul className="space-y-1.5">
+                      {selectedDetailService.documents.map((doc, i) => (
+                        <li key={i} className="flex items-center gap-2 text-stone-700">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span>{doc}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-stone-200">
+                    <div className="flex items-center gap-2">
+                      <Phone className="w-4 h-4 text-emerald-700" />
+                      <span className="text-xs font-bold text-stone-800">
+                        Helpline: {selectedDetailService.helpline}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <a
+                        href={selectedDetailService.officialPortal}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white text-xs font-bold shadow-xs transition-colors"
+                      >
+                        <span>Official Portal</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
